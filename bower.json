@@ -1,0 +1,16 @@
+{
+  "name": "laravel-boilerplate",
+  "version": "0.0.1",
+  "description": "Laravel 4 Boilerplate",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.1.0"
+  }
+}

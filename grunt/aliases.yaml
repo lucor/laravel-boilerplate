@@ -1,0 +1,19 @@
+work:
+  - 'development'
+  - 'watch'
+development:
+  - 'development-frontend'
+  - 'development-backend'
+  - 'imagemin'
+development-frontend:
+  - 'concat:js_frontend'
+  - 'concat:css_frontend'
+development-backend:
+  - 'concat:js_backend'
+  - 'concat:css_backend'
+production:
+  - 'development'
+  - 'uglify:frontend'
+  - 'cssmin:frontend'
+  - 'uglify:backend'
+  - 'cssmin:backend'

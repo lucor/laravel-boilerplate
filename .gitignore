@@ -1,0 +1,17 @@
+#Laravel
+/bootstrap/compiled.php
+/vendor
+composer.phar
+composer.lock
+.env.local.php
+.env.php
+.DS_Store
+.idea
+Thumbs.db
+/public/assets
+
+#Bower
+/bower_components
+
+#Grunt
+/node_modules
