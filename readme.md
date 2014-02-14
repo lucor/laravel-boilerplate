@@ -46,7 +46,8 @@ Let's assume you as a developer would like to add an additional library to work 
   <code>bower install --save underscore</code>
 
 2. Add the <i>underscore.js</i> source file to the target task within the <i>grunt/concat.js</i> configuration file:
-		// JS file concatenation
+```	
+	// JS file concatenation
         js_frontend: {
         	options: {
             	separator: ';'
@@ -58,7 +59,7 @@ Let's assume you as a developer would like to add an additional library to work 
 	        ],
     	    dest: 'public/assets/js/frontend.js'
     	},
-
+```
 3. Run the <code>grunt work</code> task to start developing with the new package installed.
 
 ##Thanks to
