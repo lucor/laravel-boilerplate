@@ -7,8 +7,8 @@
 		"laravel/framework": "4.1.*"
 	},
     "require-dev": {
-        "mockery/mockery": "@stable",
-        "phpunit/phpunit": "@stable"
+        "codeception/codeception": "@stable",
+        "codeception/aspect-mock": "@stable"
     },
 	"autoload": {
 		"classmap": [

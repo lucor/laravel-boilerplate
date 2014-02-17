@@ -61,6 +61,11 @@ Let's assume you as a developer would like to add an additional library to work 
 
 3. Run the <code>grunt work</code> task to start developing with the new package installed.
 
+##Test with Codeception
+Codeception is supported out of the box. To run sample tests:
+
+<code>vendor/bin/codecept run</code>
+
 ##Thanks to
 
 [Elena Kolevska](https://github.com/elena-kolevska/grunt-laravel) and [Benjamin Ulmer](https://github.com/remluben/laravel-boilerplate) who inspired me with their [Laravel Grunt](https://github.com/elena-kolevska/grunt-laravel) and [laravel-boilerplate](https://github.com/remluben/laravel-boilerplate) projects.
