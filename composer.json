@@ -8,7 +8,8 @@
 	},
     "require-dev": {
         "codeception/codeception": "@stable",
-        "codeception/aspect-mock": "@stable"
+        "codeception/aspect-mock": "@stable",
+        "mockery/mockery": "@stable"
     },
 	"autoload": {
 		"classmap": [
