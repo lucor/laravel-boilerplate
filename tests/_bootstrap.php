@@ -7,5 +7,5 @@ $kernel = \AspectMock\Kernel::getInstance();
 $kernel->init([
     'debug' => true,
     //'includePaths' => [__DIR__.'/../src']
-    'includePaths' => [__DIR__.'/../app/models']
+    'includePaths' => array(__DIR__.'/../app/models')
 ]);

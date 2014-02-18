@@ -16,5 +16,3 @@ Thumbs.db
 #Grunt
 /node_modules
 
-#Codeception
-/tests/_log/
