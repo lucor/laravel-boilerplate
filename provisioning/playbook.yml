@@ -27,6 +27,7 @@
         - zip
         - unzip
         - wget
+        - htop
         - openssl
         - sendmail
         - python-mysqldb
@@ -130,9 +131,10 @@
     - name: Application | npm packages
       command: npm install chdir=/vagrant/
       sudo: false
-
+    - name: Application | Run grunt development task
+      command: grunt development chdir=/vagrant/
+      sudo: false
     - debug: msg="Setup completed."
-
       notify: Restart MySql
       notify: Restart Apache
 
