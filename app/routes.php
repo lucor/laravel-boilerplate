@@ -11,7 +11,12 @@
 |
 */
 
-Route::get('/', function()
+Route::group(array("before" => "guest"), function()
 {
-	return View::make('hello');
+    require app_path() .'/routes/guest.php';
+});
+
+Route::group(array("before" => "auth"), function()
+{
+    require app_path() .'/routes/user.php';
 });
