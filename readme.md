@@ -8,7 +8,7 @@ The Laravel Boilerplate repository provides a simple [Laravel 4 PHP framework](h
 
 * Composer, http://getcomposer.org
 * Bower, http://bower.io
-* Grunt, http://gruntjs.org
+* Grunt, http://gruntjs.com
 
 ###Installation
 

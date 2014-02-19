@@ -1,0 +1,12 @@
+NameVirtualHost *:80
+User vagrant
+Group vagrant
+<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    DocumentRoot "/var/www/laravel/public"
+    ServerName laravel.dev
+
+    # optional...
+    ErrorLog "/var/log/apache2/laravel-error_log"
+    CustomLog "/var/log/apache2/laravel-access_log" common
+</VirtualHost>

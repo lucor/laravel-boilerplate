@@ -1,0 +1,143 @@
+---
+- hosts: laravel
+  sudo: yes
+  vars:
+    project: laravel
+    vhost: laravel.dev
+    db_name: laravel_db
+    db_user: laravel_user
+    db_pass: laravel_pass
+  tasks:
+
+    - action: shell whoami
+      register: whoami
+
+    ##
+    # System setup
+    ##
+    - name: System | Update apt cache
+      apt: update_cache=yes
+
+    - name: System | Install base packages
+      apt: pkg={{ item }} state=latest
+      with_items:
+        - git
+        - vim
+        - curl
+        - zip
+        - unzip
+        - wget
+        - openssl
+        - sendmail
+        - python-mysqldb
+        - python-apt
+        - python-pycurl
+
+    - name: System | Add ppa for php5.3
+      apt_repository: repo='ppa:rip84/php5'
+    - name: System | Add ppa for nodejs
+      apt_repository: repo='ppa:chris-lea/node.js'
+
+    ##
+    # Node setup
+    ##
+    - name: Node | Install
+      apt: pkg={{ item }} state=latest
+      with_items:
+        - nodejs
+
+    ##
+    # Apache2 setup.
+    ##
+    - name: Apache | Install
+      apt: pkg=apache2 state=present
+
+    - name: Apache | Enable some required modules
+      action: command a2enmod rewrite vhost_alias
+
+    - name: Apache | Configuration file for {{ vhost }}
+      action: template src=templates/system/etc-apache2-sites-available-{{ project }}.j2 dest=/etc/apache2/sites-available/{{ vhost }}
+
+    - name: Apache | Disable the default site
+      action: command a2dissite default
+
+    - name: Apache | Enable {{ vhost }}
+      action: command a2ensite {{ vhost }}
+
+    - name: Apache | Symlink web root 
+      file: src=/vagrant dest=/var/www/{{ project }} owner=vagrant group=vagrant state=link
+
+    ##
+    # PHP5 setup.
+    ##
+    - name: PHP | Install
+      apt: pkg={{ item }} state=latest
+      with_items:
+        - php5
+        - php5-mysql
+        - php5-curl
+        - php5-xmlrpc
+        - php5-gd
+        - php-pear
+        - php5-xdebug
+        - php5-cli
+        - php-apc
+        - php5-mcrypt
+    - name: PHP | Configuration file
+      action: template src=templates/system/etc-php5-apache2-php.ini.j2 dest=/etc/php5/apache2/php.ini
+      notify: Restart Apache
+
+    ##
+    # MySql setup.
+    ##
+    - name: MySql | Install
+      apt: pkg={{ item }} state=latest
+      with_items:
+        - mysql-server
+        - mysql-client
+    - name: MySql | Configuration file
+      action: template src=templates/system/etc-mysql-conf.d-{{ project }}.cnf.j2 dest=/etc/mysql/conf.d/{{ project }}.cnf
+      notify: Restart MySql
+    - name: MySql | Allow root remote access
+      command: mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%';"
+      sudo: false
+
+    ##
+    # Application setup
+    ##   
+
+    # Create a new database
+    - name: Application | Setup database
+      command: mysql -u root -e "DROP DATABASE IF EXISTS {{ db_name }}; CREATE DATABASE {{ db_name }};"
+      sudo: false
+    - name: Application | Grant privileges
+      command: mysql -u root -e "GRANT ALL PRIVILEGES ON {{ db_name }}.* TO '{{ db_user }}'@'localhost' IDENTIFIED BY '{{ db_pass }}'"
+      sudo: false
+    # Composer dependencies
+    - name: Application | Composer Installation
+      command: php -r "eval('?>'.file_get_contents('https://getcomposer.org/installer'));" | /usr/bin/php chdir=/vagrant/
+    - name: Application | Install dependencies via composer
+      command: /vagrant/composer.phar install --prefer-dist chdir=/vagrant/
+
+    # Bower and Npm packages
+    - name: Application | Bower installation
+      command: npm -g install bower
+    - name: Application | Bower packages
+      command: bower install chdir=/vagrant/
+      sudo: false
+    - name: Application | Grunt cli installation
+      command: npm install -g grunt-cli
+    - name: Application | npm packages
+      command: npm install chdir=/vagrant/
+      sudo: false
+
+    - debug: msg="Setup completed."
+
+      notify: Restart MySql
+      notify: Restart Apache
+
+  handlers:
+    - name: Restart Apache
+      service: name=apache2 state=restarted
+    - name: Restart MySql
+      service: name=mysql state=restarted

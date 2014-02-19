@@ -16,3 +16,5 @@ Thumbs.db
 #Grunt
 /node_modules
 
+#Vagrant
+/.vagrant
